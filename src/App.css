@@ -1,38 +1,83 @@
-.App {
+/* App.css या global css फाइल में डालें */
+
+body {
+  background: linear-gradient(135deg, #f3f5ff 0%, #ccedff 90%);
+  min-height: 100vh;
+  font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.auth-container {
+  background: rgba(255,255,255,0.90);
+  box-shadow: 0px 8px 38px 0px #6c63ff26, 0 1.5px 5px rgba(50,50,90,0.08);
+  border-radius: 14px;
+  max-width: 360px;
+  margin: 90px auto 0 auto;
+  padding: 38px 32px 25px 32px;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.auth-title {
+  font-size: 2.3rem;
+  margin-bottom: 26px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #2e2e5d;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.auth-form {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  gap: 17px;
 }
 
-.App-link {
-  color: #61dafb;
+.auth-input {
+  padding: 13px;
+  font-size: 17px;
+  border-radius: 7px;
+  border: 1.5px solid #c2c7ff;
+  background: #f7faff;
+  outline: none;
+  transition: border 0.2s, box-shadow 0.2s;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.auth-input:focus {
+  border-color: #6c63ff;
+  box-shadow: 0 0 5px 1.5px #7e7cff2f;
+}
+
+.auth-btn {
+  padding: 12px 0;
+  background: linear-gradient(90deg, #6c63ff 80%, #7a73ff);
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  font-size: 17px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.21s, transform 0.13s;
+  margin-top: 8px;
+}
+
+.auth-btn:hover {
+  background: linear-gradient(90deg, #5548c8 70%, #3b36b3 100%);
+  transform: scale(1.04);
+}
+
+.auth-footer {
+  margin-top: 24px;
+  font-size: 15.4px;
+  color: #181848;
+}
+
+.auth-link {
+  color: #6c63ff;
+  font-weight: 500;
+  text-decoration: underline;
+  transition: color 0.13s;
+}
+
+.auth-link:hover {
+  color: #3b36b3;
 }
