@@ -7,10 +7,14 @@ function Login({ onLogin }) {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+  // backend का live URL env से लें
+  const API_URL = process.env.REACT_APP_API_URL;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/login", {
+      // API call environment variable से URL के साथ
+      const res = await axios.post(`${API_URL}/login`, {
         username,
         password,
       });

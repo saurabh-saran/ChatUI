@@ -2,14 +2,15 @@ import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:5000");
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+const socket = io(API_URL);
 
 function UserList({ user, onSelectUser, onLogout }) {
   const [users, setUsers] = useState([]);
 
   const fetchUsers = useCallback(async () => {
     try {
-      const res = await axios.get("http://localhost:5000/users");
+      const res = await axios.get(`${API_URL}/users`);
       const filteredUsers = res.data.filter(
         (u) => u.username !== user.username
       );

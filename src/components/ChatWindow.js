@@ -4,7 +4,8 @@ import { io } from "socket.io-client";
 import { FaPaperclip, FaMicrophone, FaRegSmile } from "react-icons/fa";
 import EmojiPicker from "emoji-picker-react";
 
-const socket = io("http://localhost:5000");
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+const socket = io(API_URL);
 
 function ChatWindow({ user, chatWith, onBack }) {
   const [messages, setMessages] = useState([]);
@@ -17,7 +18,7 @@ function ChatWindow({ user, chatWith, onBack }) {
   useEffect(() => {
     async function fetchHistory() {
       const res = await axios.get(
-        `http://localhost:5000/messages?from=${user.username}&to=${chatWith}`
+        `${API_URL}/messages?from=${user.username}&to=${chatWith}`
       );
       setMessages(res.data);
     }

@@ -7,10 +7,14 @@ function Signup() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+  // Backend API URL env से लें
+  const API_URL = process.env.REACT_APP_API_URL;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/signup", { username, password });
+      // API call env URL से
+      await axios.post(`${API_URL}/signup`, { username, password });
       alert("User created successfully! Login now.");
       navigate("/login");
     } catch (error) {
