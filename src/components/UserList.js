@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { io } from "socket.io-client";
 
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+const API_URL = "http://localhost:8000";
 const socket = io(API_URL);
 
 function UserList({ user, onSelectUser, onLogout }) {
@@ -135,9 +135,9 @@ function UserList({ user, onSelectUser, onLogout }) {
               (e.currentTarget.style.backgroundColor = "#d0eafd")
             }
             onMouseOut={(e) =>
-              (e.currentTarget.style.backgroundColor = u.online
-                ? "#e5f2ff"
-                : "#f6f7f9")
+            (e.currentTarget.style.backgroundColor = u.online
+              ? "#e5f2ff"
+              : "#f6f7f9")
             }
           >
             <span style={{ fontWeight: 600 }}>{u.username}</span>

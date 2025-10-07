@@ -7,8 +7,8 @@ function Signup() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  // Backend API URL env से लें
-  const API_URL = process.env.REACT_APP_API_URL;
+  // Backend API URL
+  const API_URL = "http://localhost:8000";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
