@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./UserList.css";
 
 // Generates pastel color for avatars
@@ -14,10 +14,16 @@ export default function UserList({
   users = [],
   selectedUser,
   onSelectUser,
-  currentUser, // <-- prop name yahi hona chahiye!
+  currentUser,
 }) {
-  // Safe default for currentUser
-  // Yahi check: currentUser me username ho ➔ wahi dikhana
+  // Search input state
+  const [search, setSearch] = useState("");
+
+  // Filtered users according to search keyword (case-insensitive)
+  const filteredUsers = users.filter((u) =>
+    u.username.toLowerCase().includes(search.trim().toLowerCase())
+  );
+
   const userObj =
     currentUser && currentUser.username
       ? currentUser
@@ -34,25 +40,27 @@ export default function UserList({
           {userObj.username ? userObj.username[0].toUpperCase() : "?"}
         </div>
         <div>
-          <div className="userlist-usercard-name">
-            {/* No 'No User', bas username */}
-            {userObj.username || ""}
-          </div>
+          <div className="userlist-usercard-name">{userObj.username || ""}</div>
           <div className="userlist-usercard-role">{userObj.role || "User"}</div>
         </div>
       </div>
 
       {/* Search bar */}
       <div className="userlist-searchbar">
-        <input className="userlist-searchinput" placeholder="Search contacts" />
+        <input
+          className="userlist-searchinput"
+          placeholder="Search contacts"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
       </div>
 
       {/* Users List */}
       <ul className="userlist-list">
-        {users.length === 0 && (
+        {filteredUsers.length === 0 && (
           <li className="userlist-empty">No users found</li>
         )}
-        {users.map((u) => (
+        {filteredUsers.map((u) => (
           <li
             key={u.username}
             className={
@@ -71,9 +79,7 @@ export default function UserList({
             </div>
             <div className="userlist-mid">
               <span className="userlist-name">{u.username}</span>
-              <div className="userlist-statusmsg">
-                {u.lastMessage || "No messages yet"}
-              </div>
+              <div className="userlist-statusmsg">{u.lastMessage || ""}</div>
             </div>
             <div className="userlist-right">
               <span

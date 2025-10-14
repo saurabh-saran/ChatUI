@@ -53,11 +53,11 @@ export default function Sidebar({ user, onLogout }) {
           <div className="sidebar-profile-name">Saurabh</div>
           <div className="sidebar-profile-role">Designer</div>
         </div>
-        <FaSignOutAlt
-          className="sidebar-logout"
-          onClick={handleLogout}
-          title="Logout"
-        />
+
+        <button className="sidebar-logout-btn" onClick={handleLogout}>
+          <FaSignOutAlt style={{ marginRight: 6 }} />
+          Logout
+        </button>
       </div>
     </aside>
   );

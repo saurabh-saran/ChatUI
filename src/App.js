@@ -18,6 +18,9 @@ function MainApp({ user, setUser }) {
   const [selectedUser, setSelectedUser] = useState(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 800);
   const [showChat, setShowChat] = useState(false);
+  const selectedUserObj = users.find(
+    (u) => u.username === selectedUser?.username
+  );
 
   useEffect(() => {
     const resizeHandler = () => setIsMobile(window.innerWidth < 800);
@@ -97,6 +100,7 @@ function MainApp({ user, setUser }) {
           <ChatWindow
             user={user}
             chatWith={selectedUser.username}
+            chatWithStatus={selectedUserObj?.online ? "Online" : "Offline"}
             onBack={() => (isMobile ? setShowChat(false) : null)}
             isMobile={isMobile}
           />
