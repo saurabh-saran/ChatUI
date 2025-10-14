@@ -1,170 +1,96 @@
-import React, { useEffect, useState, useCallback } from "react";
-import axios from "axios";
-import { io } from "socket.io-client";
+import React from "react";
+import "./UserList.css";
 
-// const API_URL = "http://localhost:8000";
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8000";
+// Generates pastel color for avatars
+function stringToColor(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++)
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  const color = `hsl(${hash % 360},75%,79%)`;
+  return color;
+}
 
-const socket = io(API_URL);
-
-function UserList({ user, onSelectUser, onLogout }) {
-  const [users, setUsers] = useState([]);
-
-  const fetchUsers = useCallback(async () => {
-    try {
-      const res = await axios.get(`${API_URL}/users`);
-      const filteredUsers = res.data.filter(
-        (u) => u.username !== user.username
-      );
-      setUsers(filteredUsers);
-    } catch {
-      alert("Failed to load users");
-    }
-  }, [user.username]);
-
-  useEffect(() => {
-    fetchUsers();
-    socket.emit("userOnline", user.username);
-
-    socket.on("updateUserList", (onlineUsers) => {
-      setUsers((prevUsers) =>
-        prevUsers.map((u) => ({
-          ...u,
-          online: onlineUsers.includes(u.username),
-        }))
-      );
-    });
-
-    return () => {
-      socket.off("updateUserList");
-    };
-  }, [fetchUsers, user.username]);
+export default function UserList({
+  users = [],
+  selectedUser,
+  onSelectUser,
+  currentUser, // <-- prop name yahi hona chahiye!
+}) {
+  // Safe default for currentUser
+  // Yahi check: currentUser me username ho ➔ wahi dikhana
+  const userObj =
+    currentUser && currentUser.username
+      ? currentUser
+      : { username: "", role: "" };
 
   return (
-    <div
-      style={{
-        maxWidth: 400,
-        margin: "60px auto",
-        padding: "38px 32px 30px 32px",
-        boxShadow: "0 8px 24px #1f539830",
-        borderRadius: 22,
-        fontFamily: "sans-serif",
-        background: "#f4f9fc",
-        textAlign: "center",
-        minHeight: 395,
-      }}
-    >
-      {/* Welcome line */}
-      <div
-        style={{
-          marginBottom: 15,
-          fontSize: "23px",
-          fontWeight: 700,
-          color: "#1f2353",
-          letterSpacing: "1px",
-        }}
-      >
-        <span
-          style={{
-            color: "#2c63e4",
-            fontSize: 28,
-            marginRight: 6,
-          }}
+    <div className="userlist-panel">
+      {/* Top User Section */}
+      <div className="userlist-usercard">
+        <div
+          className="userlist-usercard-avatar"
+          style={{ background: stringToColor(userObj.username || "") }}
         >
-          👋
-        </span>
-        Welcome, {user.username}
+          {userObj.username ? userObj.username[0].toUpperCase() : "?"}
+        </div>
+        <div>
+          <div className="userlist-usercard-name">
+            {/* No 'No User', bas username */}
+            {userObj.username || ""}
+          </div>
+          <div className="userlist-usercard-role">{userObj.role || "User"}</div>
+        </div>
       </div>
-      {/* Logout button */}
-      <button
-        onClick={onLogout}
-        style={{
-          marginBottom: 26,
-          border: "none",
-          background: "linear-gradient(90deg,#3f87f5,#22d6ce)",
-          color: "#fff",
-          padding: "10px 34px",
-          borderRadius: 10,
-          fontWeight: 600,
-          fontSize: 16,
-          letterSpacing: "1px",
-          boxShadow: "0 1px 10px #2c63e430",
-          cursor: "pointer",
-        }}
-      >
-        Logout
-      </button>
-      {/* Users list heading */}
-      <h3
-        style={{
-          color: "#1969ec",
-          fontFamily: "inherit",
-          marginBottom: "18px",
-          fontSize: "20px",
-          letterSpacing: "1px",
-        }}
-      >
-        Users
-      </h3>
-      {/* Users list */}
-      <ul style={{ listStyle: "none", padding: 0 }}>
+
+      {/* Search bar */}
+      <div className="userlist-searchbar">
+        <input className="userlist-searchinput" placeholder="Search contacts" />
+      </div>
+
+      {/* Users List */}
+      <ul className="userlist-list">
         {users.length === 0 && (
-          <li style={{ color: "#707070", fontSize: 16, margin: "24px 0" }}>
-            No users found
-          </li>
+          <li className="userlist-empty">No users found</li>
         )}
         {users.map((u) => (
           <li
             key={u.username}
-            onClick={() => onSelectUser(u.username)}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              padding: "12px 18px",
-              margin: "10px 0",
-              backgroundColor: u.online ? "#e5f2ff" : "#f6f7f9",
-              color: "#222",
-              borderRadius: 14,
-              cursor: "pointer",
-              fontWeight: "520",
-              fontSize: 17,
-              boxShadow: u.online ? "0 2px 9px #27a7e410" : "none",
-              border: u.online ? "1.5px solid #2c63e4" : "1.5px solid #edeff0",
-              transition: "background 0.22s,border 0.22s",
-            }}
-            onMouseOver={(e) =>
-              (e.currentTarget.style.backgroundColor = "#d0eafd")
+            className={
+              "userlist-item" +
+              (selectedUser && selectedUser.username === u.username
+                ? " userlist-item-active"
+                : "")
             }
-            onMouseOut={(e) =>
-              (e.currentTarget.style.backgroundColor = u.online
-                ? "#e5f2ff"
-                : "#f6f7f9")
-            }
+            onClick={() => onSelectUser(u)}
           >
-            <span style={{ fontWeight: 600 }}>{u.username}</span>
-            <span
-              style={{
-                display: "inline-block",
-                padding: "5px 14px",
-                borderRadius: 24,
-                fontSize: 15,
-                background: u.online
-                  ? "linear-gradient(90deg,#3f87f5,#22d6ce)"
-                  : "#e1e1e3",
-                color: u.online ? "#fff" : "#57606e",
-                fontWeight: 600,
-                marginLeft: 10,
-                letterSpacing: "0.5px",
-              }}
+            <div
+              className="userlist-avatar"
+              style={{ background: stringToColor(u.username) }}
             >
-              {u.online ? "Online" : "Offline"}
-            </span>
+              {u.username[0] ? u.username[0].toUpperCase() : "👤"}
+            </div>
+            <div className="userlist-mid">
+              <span className="userlist-name">{u.username}</span>
+              <div className="userlist-statusmsg">
+                {u.lastMessage || "No messages yet"}
+              </div>
+            </div>
+            <div className="userlist-right">
+              <span
+                className={
+                  u.online
+                    ? "userlist-dot userlist-dot-online"
+                    : "userlist-dot userlist-dot-offline"
+                }
+                title={u.online ? "Online" : "Offline"}
+              />
+              <span className="userlist-time">
+                {u.lastMessageTime ? u.lastMessageTime : ""}
+              </span>
+            </div>
           </li>
         ))}
       </ul>
     </div>
   );
 }
-
-export default UserList;

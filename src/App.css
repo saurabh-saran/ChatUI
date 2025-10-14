@@ -1,83 +1,61 @@
-/* App.css या global css फाइल में डालें */
-
-body {
-  background: linear-gradient(135deg, #f3f5ff 0%, #ccedff 90%);
-  min-height: 100vh;
-  font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+body, html, #root {
+  height: 100vh;
+  width: 100vw;
   margin: 0;
   padding: 0;
+  background: #f3f6fa;
 }
 
-.auth-container {
-  background: rgba(255,255,255,0.90);
-  box-shadow: 0px 8px 38px 0px #6c63ff26, 0 1.5px 5px rgba(50,50,90,0.08);
-  border-radius: 14px;
-  max-width: 360px;
-  margin: 90px auto 0 auto;
-  padding: 38px 32px 25px 32px;
-  text-align: center;
+/* Core Layout */
+.main-container {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  height: 100vh;
+  gap: 0;         /* IMPORTANT: Flex children me gap 0 */
+  align-items: stretch;
+  background: #f3f6fa;
+  position: relative;
 }
 
-.auth-title {
-  font-size: 2.3rem;
-  margin-bottom: 26px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  color: #2e2e5d;
-}
-
-.auth-form {
+/* Sidebar */
+.sidebar {
+  width: 230px;
+  min-width: 210px;
+  height: 100vh;
+  background: #f7faff;
+  border-right: 1px solid #e3e9f4;
   display: flex;
   flex-direction: column;
-  gap: 17px;
+  justify-content: space-between;
+  padding: 0;
+  margin: 0;
+  box-shadow: 1px 0 8px #e3e9f4;
+  position: relative;
+  z-index: 2;
 }
 
-.auth-input {
-  padding: 13px;
-  font-size: 17px;
-  border-radius: 7px;
-  border: 1.5px solid #c2c7ff;
-  background: #f7faff;
-  outline: none;
-  transition: border 0.2s, box-shadow 0.2s;
+/* User List Panel (No margin!!) */
+.userlist-panel {
+  width: 355px;
+  min-width: 300px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-right: 1px solid #e3e9f4;
+  box-shadow: 1px 0 18px #e9edf7;
+  margin: 0;
+  padding: 0;
+  position: relative;
 }
 
-.auth-input:focus {
-  border-color: #6c63ff;
-  box-shadow: 0 0 5px 1.5px #7e7cff2f;
+.userlist-usercard {
+  margin: 18px 14px 7px 14px; /* This margin is fine for inside spacing only */
 }
 
-.auth-btn {
-  padding: 12px 0;
-  background: linear-gradient(90deg, #6c63ff 80%, #7a73ff);
-  color: #fff;
-  border: none;
-  border-radius: 7px;
-  font-size: 17px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background 0.21s, transform 0.13s;
-  margin-top: 8px;
+@media screen and (max-width: 900px) {
+  .sidebar { width: 60px; }
+  .userlist-panel { min-width: 0; width: 100%; }
 }
 
-.auth-btn:hover {
-  background: linear-gradient(90deg, #5548c8 70%, #3b36b3 100%);
-  transform: scale(1.04);
-}
-
-.auth-footer {
-  margin-top: 24px;
-  font-size: 15.4px;
-  color: #181848;
-}
-
-.auth-link {
-  color: #6c63ff;
-  font-weight: 500;
-  text-decoration: underline;
-  transition: color 0.13s;
-}
-
-.auth-link:hover {
-  color: #3b36b3;
-}
